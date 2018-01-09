@@ -1,0 +1,210 @@
+doctype html
+html(lang='en' ng:app="members" ng:controller="members")
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    // Meta, title, CSS, favicons, etc.
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title(ng:if="false") Loading...
+    title(ng:if="true") {{ 'ICO snovio dashboard' | translate }} 
+    // Bootstrap
+    include ../common-style
+    link(rel='stylesheet prefetch', href='https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.0.2/jquery.countdown.css')
+    // Custom ICO Style
+    style 
+       include vendors/bootstrap-progressbar.min.css
+       include vendors/countdown.min.css
+       include ../style.css
+  body.nav-md(ng:class="{visible: true}")
+    .full-container.body(ng:hide="loaded()")
+       div.loading 
+          .spinner
+          .loading-text Loading
+    .full-container.body(ng:if="loaded()")
+      .main_container
+        // top navigation
+        .top_nav
+          include ./nav-menu
+        // /top navigation
+        // page content
+        .container(role='main')
+          div
+            .row
+              .col-md-9.col-sm-9.col-xs-12
+                .x_panel.counter(ng:if="show.counter != false")
+                  .x_title
+                    h2 {{ 'Crowdsale starts in' | translate }}
+                    ul.nav.navbar-right.panel_toolbox
+                      li
+                        a.collapse-link(ng:click="collapse.counter = !(collapse.counter)")
+                          i.fa.fa-chevron-up(ng:hide="collapse.counter")
+                          i.fa.fa-chevron-down(ng:show="collapse.counter")
+                      li
+                        a.close-link(ng:click="show.counter = false")
+                          i.fa.fa-close
+                    .clearfix
+                  .x_content(ng:hide="collapse.counter")
+                    .countdown.countdown-container.col-md-10.col-md-offset-1.col-xs-12(data-border-color='rgba(0, 0, 0, .8)')
+                      .clock
+                        .clock-item.clock-days.countdown-time-value.col-xs-3.col-sm-3.col-md-3
+                          .wrap
+                            .inner
+                              #canvas-days.clock-canvas
+                              .text
+                                p.val {{model.timer.days}}
+                                p.type-days.type-time {{ 'Days' | translate }}
+                        .clock-item.clock-hours.countdown-time-value.col-xs-3.col-sm-3.col-md-3
+                          .wrap
+                            .inner
+                              #canvas-hours.clock-canvas
+                              .text
+                                p.val {{model.timer.hours}}
+                                p.type-hours.type-time {{ 'Hours' | translate }}
+                        .clock-item.clock-minutes.countdown-time-value.col-xs-3.col-sm-3.col-md-3
+                          .wrap
+                            .inner
+                              #canvas-minutes.clock-canvas
+                              .text
+                                p.val {{model.timer.minutes}}
+                                p.type-minutes.type-time {{ 'Minutes' | translate }}
+                        .clock-item.clock-seconds.countdown-time-value.col-xs-3.col-sm-3.col-md-3
+                          .wrap
+                            .inner
+                              #canvas-seconds.clock-canvas
+                              .text
+                                p.val {{model.timer.seconds}}
+                                p.type-seconds.type-time {{ 'Seconds' | translate }}
+                    .clearfix
+                .x_panel.saleprogress(ng:if="show.saleprogress != false")
+                  .x_title
+                    h2 {{ 'Pre sale is LIVE' | translate }}
+                    ul.nav.navbar-right.panel_toolbox
+                      li
+                        a.collapse-link(ng:click="collapse.saleprogress = !(collapse.saleprogress)")
+                          i.fa.fa-chevron-up(ng:hide="collapse.saleprogress")
+                          i.fa.fa-chevron-down(ng:show="collapse.saleprogress")
+                      li
+                        a.close-link(ng:click="show.saleprogress = false")
+                          i.fa.fa-close
+                    .clearfix
+                  .x_content(ng:hide="collapse.saleprogress")
+                    .widget_summary
+                      .w_left
+                        strong $0
+                      .w_center.w_100
+                        .progress
+                          .progress-bar.bg-purple(role='progressbar' aria-valuenow='{{model.progress.current.usd | cut }}' aria-valuemin='0' aria-valuemax='{{model.progress.max }}' ng:style="{width: model.progress.current.percent}") ${{model.progress.current.usd | cut}}
+                       // .text-right.softcap {{ 'Softcap' | translate }} ${{model.progress.min | cut }}
+                      .w_right
+                        strong  ${{model.progress.max | cut }}
+                .x_panel.status(ng:if="show.status != false")
+                  .x_title
+                    h2 {{ 'Tokensale status' | translate }}
+                    ul.nav.navbar-right.panel_toolbox
+                      li
+                        a.collapse-link(ng:click="collapse.status = !(collapse.status)")
+                          i.fa.fa-chevron-up(ng:hide="collapse.status")
+                          i.fa.fa-chevron-down(ng:show="collapse.status")
+                      li
+                        a.close-link(ng:click="show.status = false")
+                          i.fa.fa-close
+                    .clearfix
+                  .x_content(ng:hide="collapse.status")
+                    .tile_count
+                      .col-md-6.col-sm-6.col-xs-12.text-center.tile_stats_count
+                        .count.big_count
+                          i.fa.fa-dollar.purple
+                          | {{model.progress.current.usd | cut}} USD
+                      .col-md-6.col-sm-6.col-xs-12.text-center.tile_stats_count
+                        .count.big_count
+                          i.fa.fa-user.purple
+                          | {{model.progress.current.contributors}}
+                    .clearfix
+                    .currency.tile_count
+                      .col-md-3.col-sm-3.col-xs-6.tile_stats_count(ng:repeat="row in model.rates")
+                        span.count_top
+                          img(ng:src='{{row.img}}' alt='{{row.token}}')
+                        .count {{row.token == 'ETH' ? model.progress.current.eth : row.total | cut}}
+                        span.count_bottom {{row.token}}
+                      .col-md-3.col-sm-3.col-xs-6.tile_stats_count
+                        span.count_top
+                          img(ng:src='https://www.shareicon.net/download/2016/11/14/852252_usd_512x512.png' alt='usd')
+                        .count 15,000
+                        span.count_bottom USD
+                      
+                #calculate.x_panel.calculate(ng:if="show.calculate != false")
+                  .x_title
+                    h2 {{ 'Calculate' | translate }}
+                    ul.nav.navbar-right.panel_toolbox
+                      li
+                        a.collapse-link(ng:click="collapse.calculate = !(collapse.calculate)")
+                          i.fa.fa-chevron-up(ng:hide="collapse.calculate")
+                          i.fa.fa-chevron-down(ng:show="collapse.calculate")
+                      li
+                        a.close-link(ng:click="show.calculate = false")
+                          i.fa.fa-close
+                    .clearfix
+                  .x_content(ng:hide="collapse.calculate")
+                    .calculator
+                      .left
+                        .form-group
+                          h5 {{ 'Your buy' | translate }}
+                          input#coin-amount.form-control(type='text' ng:model="model.youBuy" ng:change="changePrice()")
+                          label {{ 'SNOV tokens' | translate }}
+                        a.direction(href='javascript:void(0)', data-direction='right')
+                          i.fa.fa-arrow-right(aria-hidden='true')
+                      .right
+                        .form-group.is-empty
+                          h5 {{ 'Your pay' | translate }}
+                          input#coin-price.form-control(type='text' value='{{model.youPay}}' disabled='')
+                          .btn-group
+                            button.btn.btn-dark.dropdown-toggle(data-toggle='dropdown' type='button' aria-expanded='false')
+                              a#calculator-currency-btn.btn-select.current-currency(data-code='{{model.currentRate.token}}') {{model.currentRate.fullname}}
+                              span.caret
+                            ul.dropdown-menu(role='menu')
+                              li(ng:repeat="row in model.rates")
+                                a.calculator-currency(data-code='{{row.token}}' ng:click="setCurrent(row)") {{row.fullname}}
+                      .clearfix
+                      .total
+                        button.btn.btn-lg.btn-theme(ng:click="buy($event)" type='button' data-toggle="modal" data-target=".bs-buy-modal") {{ 'Buy now' | translate }}
+                      .modal.fade.bs-buy-modal(tabindex='-1', role='dialog', aria-hidden='true')
+                        .modal-dialog.modal-lg.text-left
+                          .modal-content
+                            .modal-header
+                              button.close(type='button' data-dismiss='modal')
+                                span(aria-hidden='true') ×
+                              h4#myModalLabel.modal-title {{ 'Make a deposit' | translate }}
+                            .modal-body
+                              .col-md-4.col-sm-4.col-xs-12
+                                .bs-wrap(qrcode="model.address")
+                              .col-md-8.col-sm-8.col-xs-12
+                                p.lead Send your contribution at the address below:
+                                .bs-wrap
+                                  h4
+                                    strong {{model.address}}
+                              .col-md-12.col-sm-12.col-xs-12
+                                p.lead
+                                  | {{ 'Please make sure your deposit equals or exceeds the minimum purchase amount (please check the minimum amount in WP)' | translate }}
+                                .warning(ng:if="model.warning.length > 0")
+                                  div(ng:repeat="warning in model.warning") {{warning | translate}}
+                              .clearfix
+                include ./history
+              include sidebar
+        // /page content
+        // footer content
+        include ./footer.jade
+        // /footer content
+    
+    
+    // script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js')
+    //script(src="vendors/final-countdown.js")
+    // Angular
+    include ../common.jade
+    script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-progressbar/0.9.0/bootstrap-progressbar.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/kineticjs/5.1.9/kinetic.js')
+    script(src='//cdn.rawgit.com/davidshimjs/qrcodejs/master/qrcode.min.js')
+    script 
+      include ../languages.js
+      include ../proofofwork.js
+      include ./logic.js

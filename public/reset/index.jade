@@ -1,0 +1,47 @@
+doctype html
+html(ng:app="app" ng:controller="restore")
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    // Meta, title, CSS, favicons, etc.
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title(ng:if="false") Loading...
+    title(ng:if="true") {{ 'Reset Password' | translate }}
+    include ../common-style
+    // Custom Theme Style
+    style 
+      include ../style.css
+  body.login(ng:class="{visible: true}")
+    div
+      .login_wrapper
+        #restore.animate.form.restore_form
+          section.login_content
+            form
+              h1 {{ 'Reset password' | translate }}
+              
+              div(ng:if='!model.passwordReset')
+                p.text-left
+                  | {{ 'Please enter your new password.' | translate }}
+                div
+                  input.form-control(type='password', name='password', placeholder='New password', required='' ng:model="form.newPassword")
+                div
+                  input.form-control(type='password', name='password', placeholder='Repeat new password', required='' ng:model="form.newPasswordAgain")
+                div
+                  a.btn.btn-theme.btn-block.btn-lg.submit(href='/members/index.html' ng:click="reset($event)") {{ 'Reset password' | translate }}
+              
+              div(ng:if='model.passwordReset')
+                p.text-left
+                  | {{ 'Your password has been reset.' | translate }}
+                p.text-left
+                  a(href='/login/index.html') {{ 'Login into your account' | translate }}
+              
+              .clearfix
+              .separator
+                .clearfix
+                br
+    include ../common.jade
+    script
+       include ../languages.js
+       include ../proofofwork.js
+       include ./logic.js

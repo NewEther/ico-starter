@@ -1,0 +1,60 @@
+doctype html
+html(lang='en' ng:app="app" ng:controller="members")
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    // Meta, title, CSS, favicons, etc.
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title(ng:if="false") Loading...
+    title(ng:if="true") {{ 'ICO snovio dashboard ' | translate }}
+    include ../common-style
+    style 
+      include ../style.css
+  body.nav-md(ng:class="{visible: true}" ng:controller="settings")
+    .full-container.body
+      .main_container
+        // top navigation
+        .top_nav
+          include ../members/nav-menu
+        .container(role='main')
+          div
+            .row
+              .col-md-9.col-sm-9.col-xs-12
+                .x_panel.counter
+                  .x_title
+                    h2 {{ 'User Settings' | translate }}
+                    .clearfix
+                  .x_content
+                    #userinfo.animate.form
+                      p
+                        {{ 'You are able to buy SNOV Tokens using BTC, ETH, LTC, DASH, ZEC, ETC, or USD (wire transfer for any amount over $1,000).' | translate }}
+                      p
+                        {{ 'The calculator is provided for your convenience. You can enter a number of SNOV Tokens you wish to buy and calculate the amount you would need to have in your account wallets.' | translate }}
+                      p
+                        {{ 'Please note that transfer of funds to your account wallets does not constitute a purchase of the SNOV Tokens. After the funds are deposited, you would need to complete Step 3 to purchase the required number of SNOV tokens with the deposited funds.' | translate }}
+                      p
+                        {{ 'If you are purchasing SNOV Tokens with any currency other than BTC, please note that price of SNOV Tokens would be calculated at the time of actual purchase of the SNOV Tokens and not at the time of transfer of the funds to your account wallets.' | translate }}
+                      section.well
+                        form.form-horizontal
+                          .form-group
+                            label.control-label.col-md-4.col-sm-4.col-xs-12(for='wallet') {{ 'Enter your ETH wallet number' | translate }}
+                            .col-md-6.col-sm-6.col-xs-12
+                              input#wallet.form-control.col-md-7.col-xs-12(type='text' required='' placeholder='0x0000000000000000000000000000000000000000' ng:model="form.address")
+                          .col-md-3.col-sm-3.col-md-offset-4.col-sm-offset-4.col-xs-12
+                            a.btn.btn-theme.btn-lg.submit.btn-block(ng:click="confirm()") {{ 'Confirm' | translate }}
+                          .clearfix
+                    .clearfix
+              include ../members/sidebar
+        // /page content
+        // footer content
+        include ../members/footer.jade
+    // Angular
+    include ../common.jade
+    // Custom Theme Scripts
+    script 
+       //-include ../common.js
+       include ../languages.js
+       include ../proofofwork.js
+       include ../members/logic.js
+       include ./logic.js

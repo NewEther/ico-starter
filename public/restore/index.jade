@@ -1,0 +1,44 @@
+doctype html
+html(ng:app="app" ng:controller="restore")
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    // Meta, title, CSS, favicons, etc.
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title(ng:if="false") Loading...
+    title(ng:if="true") {{ 'Restore Password' | translate }}
+    // Bootstrap
+    include ../common-style
+    // Custom Theme Style
+    style 
+      include ../style.css
+  body.login(ng:class="{visible: true}")
+    div
+      .login_wrapper
+        #restore.animate.form.restore_form
+          section.login_content
+            form
+              h1 {{ 'Forgot password' | translate }}
+              
+              div(ng:if='!model.emailSent')
+                p.text-left
+                  | {{ 'Please enter your email so we can send you a link to restore the access to your account.' | translate }}
+                div
+                  input.form-control(type='email', name='email', placeholder='Email', required='' ng:model="form.email")
+                div
+                  a.btn.btn-theme.btn-block.btn-lg.submit(href='/members/index.html' ng:click="restore($event)") {{ 'Restore the access to your account' | translate }}
+              
+              div(ng:if='model.emailSent')
+                p.text-left
+                  | {{ 'A link to resent your password has been sent to your email address, please check it.' | translate }}
+                
+              .clearfix
+              .separator
+                .clearfix
+                br
+    include ../common.jade
+    script 
+       include ../languages.js
+       include ../proofofwork.js
+       include ./logic.js

@@ -1,0 +1,86 @@
+.col-md-3.col-sm-3.col-xs-12.sidebar
+    .x_panel
+      .x_content.tile_count
+        .tile_stats_count
+          span.count_top {{ 'Token crowdsale pool:' | translate }}
+          .count ${{model.progress.max | cut }}
+        hr
+        .tile_stats_count
+          span.count_top {{ 'Snov token price:' | translate }}
+          .count 1 SNOV = $0.01
+      .item
+        table.table.bonuses
+          thead
+            tr
+              th(colspan='2')
+                h4 {{ 'Bonuses:' | translate }}
+          tbody
+            tr
+              td {{ 'If contributed > 5k USD' | translate }}
+              th.lead.text-right 15%
+            tr
+              td {{ 'If contributed > 50k USD' | translate }}
+              th.lead.text-right 25%
+      hr
+      
+      div(ng:hide="model.you.validAddress")
+        h4 Your tokens
+        .alert.alert-warning 
+          a(href="/settings/" style="font-size: 1.5rem") 
+            | Please setup your Ethereum address to receive SNOV tokens
+      
+      .item(ng:show="model.you.validAddress")
+        table.table.personalinfo.no-border
+          tbody
+            //tr
+              td {{ 'Your ETH address' | translate }}
+              th.lead.text-right {{model.you.ethAddress}}
+            //tr
+              td {{ 'You contributed' | translate }}
+              th.lead.text-right {{model.you.contributedEth}} ETH
+            tr
+              td {{ 'Tokens you hold' | translate }}
+              th.lead.text-right {{model.you.tokens}}
+              
+      a.btn.btn-block.btn-lg.btn-theme(href='/members/#calculate') {{ 'Buy now' | translate }}
+      hr
+      ul.list-inline.social-buttons
+        li
+          a(href='https://t.me/snovio_ico', alt='telegram', title='telegram', target='_blank')
+            i.fa.fa-paper-plane
+        li
+          a(href='https://www.reddit.com/user/Snovio_ICO/', alt='reddit', title='reddit', target='_blank')
+            i.fa.fa-reddit
+        li
+          a(href='https://medium.com/@ico_snovio', alt='medium', title='medium', target='_blank')
+            i.fa.fa-medium
+        li
+          a(href='https://bitcointalk.org/index.php?topic=2111272.0', alt='btc', title='btc', target='_blank')
+            i.fa.fa-btc
+        li
+          a(href='mailto:em@snov.io', alt='mail', title='mail', target='_blank')
+            i.fa.fa-envelope
+            
+      .x_content.tile_count
+        ul.list-unstyled.msg_list
+          li
+            a
+              span.image
+                img(src="https://tokensale.snov.io/img/user2.jpg", alt="Profile Image")
+              |                                             
+              span
+                span Cheng Jin Hooi
+              |                                             
+              span.message
+                | {{ 'Received the snov token! It shown in my wallet! Thank you team' | translate }} 
+          |                                     
+          li
+            a
+              span.image
+                img(src="https://tokensale.snov.io/img/user1.jpg",  alt="Profile Image")
+              |                                             
+              span
+                span Mr M
+              |                                             
+              span.message
+                | {{ 'Snovio ICO has most helpful support team' | translate }}      
